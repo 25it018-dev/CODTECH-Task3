@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Clock & Stopwatch</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(to right, #141e30, #243b55);
+      color:white;
+    }
+
+    .container{
+      width:400px;
+      background:rgba(255,255,255,0.1);
+      padding:30px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    h1{
+      margin-bottom:20px;
+      color:#00e5ff;
+    }
+
+    /* Clock */
+
+    .clock{
+      font-size:45px;
+      font-weight:bold;
+      margin-bottom:30px;
+      letter-spacing:3px;
+    }
+
+    /* Stopwatch */
+
+    .stopwatch{
+      font-size:40px;
+      margin-bottom:25px;
+    }
+
+    .buttons button{
+      padding:10px 18px;
+      margin:5px;
+      border:none;
+      border-radius:5px;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .start{
+      background:#28a745;
+      color:white;
+    }
+
+    .pause{
+      background:#ffc107;
+      color:black;
+    }
+
+    .reset{
+      background:#dc3545;
+      color:white;
+    }
+
+    .buttons button:hover{
+      transform:scale(1.05);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Digital Clock -->
+
+    <h1>Digital Clock</h1>
+
+    <div class="clock" id="clock">
+      00:00:00
+    </div>
+
+    <!-- Stopwatch -->
+
+    <h1>Stopwatch</h1>
+
+    <div class="stopwatch" id="stopwatch">
+      00:00:00
+    </div>
+
+    <div class="buttons">
+
+      <button class="start" onclick="startStopwatch()">
+        Start
+      </button>
+
+      <button class="pause" onclick="pauseStopwatch()">
+        Pause
+      </button>
+
+      <button class="reset" onclick="resetStopwatch()">
+        Reset
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    /* Digital Clock */
+
+    function updateClock(){
+
+      let now = new Date();
+
+      let hours = String(now.getHours()).padStart(2, '0');
+
+      let minutes = String(now.getMinutes()).padStart(2, '0');
+
+      let seconds = String(now.getSeconds()).padStart(2, '0');
+
+      document.getElementById("clock").innerHTML =
+        `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+
+    updateClock();
+
+
+    /* Stopwatch */
+
+    let seconds = 0;
+
+    let minutes = 0;
+
+    let hours = 0;
+
+    let timer = null;
+
+
+    function updateStopwatch(){
+
+      seconds++;
+
+      if(seconds == 60){
+        seconds = 0;
+        minutes++;
+      }
+
+      if(minutes == 60){
+        minutes = 0;
+        hours++;
+      }
+
+      let h = String(hours).padStart(2, '0');
+
+      let m = String(minutes).padStart(2, '0');
+
+      let s = String(seconds).padStart(2, '0');
+
+      document.getElementById("stopwatch").innerHTML =
+        `${h}:${m}:${s}`;
+    }
+
+
+    function startStopwatch(){
+
+      if(timer !== null){
+        clearInterval(timer);
+      }
+
+      timer = setInterval(updateStopwatch, 1000);
+    }
+
+
+    function pauseStopwatch(){
+
+      clearInterval(timer);
+    }
+
+
+    function resetStopwatch(){
+
+      clearInterval(timer);
+
+      seconds = 0;
+      minutes = 0;
+      hours = 0;
+
+      document.getElementById("stopwatch").innerHTML =
+        "00:00:00";
+    }
+
+  </script>
+
+</body>
+</html>
